@@ -27,6 +27,7 @@ def clean_data(data):
             artist=lambda x: x["artist"].str.lower(),
             tags=lambda x: x["tags"].str.lower()
         )
+        .reset_index(drop=True)
     )
     
     
