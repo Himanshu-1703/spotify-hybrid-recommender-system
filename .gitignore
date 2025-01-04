@@ -170,11 +170,7 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-# data folder
-data/
-
 # virtualenv
 .venv/
 
-# transformer object
-transformer.joblib
+/transformer.joblib
