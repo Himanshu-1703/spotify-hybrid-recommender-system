@@ -99,7 +99,7 @@ def calculate_similarity_scores(input_vector, data):
     return similarity_scores
 
 
-def recommend(song_name, songs_data, transformed_data, k=10):
+def content_recommendation(song_name, songs_data, transformed_data, k=10):
     """
     Recommends top k songs similar to the given song based on content-based filtering.
 
@@ -130,7 +130,8 @@ def recommend(song_name, songs_data, transformed_data, k=10):
     top_k_list = top_k_songs_names[['name','artist','spotify_preview_url']].reset_index(drop=True)
     return top_k_list
 
-def test_recommendations(data_path, song_name, k=10):
+
+def main(data_path, song_name, k=10):
     """
     Test the recommendations for a given song using content-based filtering.
 
@@ -171,4 +172,4 @@ def test_recommendations(data_path, song_name, k=10):
     print(top_k_songs)
     
 if __name__ == "__main__":
-    test_recommendations(CLEANED_DATA_PATH, "Hips Don't Lie")
+    main(CLEANED_DATA_PATH, "Hips Don't Lie")

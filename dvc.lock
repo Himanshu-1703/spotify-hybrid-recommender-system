@@ -21,8 +21,8 @@ stages:
     deps:
     - path: content_based_filtering.py
       hash: md5
-      md5: 1d75f8365b92a3f57b0ca079e099e174
-      size: 6781
+      md5: be0432a6387759b23c5d405151c4340d
+      size: 6764
     - path: data/cleaned_data.csv
       hash: md5
       md5: b5e99f8fcf0e54fa347c97490c779d67
@@ -38,5 +38,34 @@ stages:
       size: 4522771
     - path: transformer.joblib
       hash: md5
-      md5: 27c9a2ed1584d9bb5348dff7a232f6b2
+      md5: 21a1d37c3a3caa3473bb297948bc4420
       size: 193055
+  interaction_data:
+    cmd: python collaborative_filtering.py
+    deps:
+    - path: collaborative_filtering.py
+      hash: md5
+      md5: 0a918a4846513d199579e004d4f209ea
+      size: 5734
+    - path: data/User Listening History.csv
+      hash: md5
+      md5: 3a12e713844195171c7040c051d6d4ae
+      size: 602515573
+    - path: data/cleaned_data.csv
+      hash: md5
+      md5: b5e99f8fcf0e54fa347c97490c779d67
+      size: 13709636
+    outs:
+    - path: data/collab_filtered_data.csv
+      hash: md5
+      md5: c0fc661e2f86835ab81094d000285e93
+      size: 8259927
+    - path: data/interaction_matrix.npz
+      hash: md5
+      md5: 53f8fa1e7cec19856a6b2bc60ce8881f
+      size: 32311353
+    - path: data/item_user_data
+      hash: md5
+      md5: db29e80d087c8acd4aae2ba4f822b57c.dir
+      size: 753193758
+      nfiles: 9

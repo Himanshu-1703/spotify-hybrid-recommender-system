@@ -1,5 +1,5 @@
 import streamlit as st
-from content_based_filtering import recommend
+from content_based_filtering import content_recommendation
 from scipy.sparse import load_npz
 import pandas as pd
 
@@ -35,7 +35,7 @@ k = st.selectbox('How many recommendations do you want?', [5,10,15,20], index=1)
 if st.button('Get Recommendations'):
     if (data["name"] == song_name).any():
         st.write('Recommendations for', f"**{song_name}**")
-        recommendations = recommend(song_name,data,transformed_data,k)
+        recommendations = content_recommendation(song_name,data,transformed_data,k)
         
         # Display Recommendations
         for ind , recommendation in recommendations.iterrows():
