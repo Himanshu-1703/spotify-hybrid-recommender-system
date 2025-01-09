@@ -38,15 +38,15 @@ stages:
       size: 4522771
     - path: transformer.joblib
       hash: md5
-      md5: 0c22091f6c35f91e84836a74ebdc310c
+      md5: b9ce389ccb6c59caecfad694b04bb3e0
       size: 193055
   interaction_data:
     cmd: python collaborative_filtering.py
     deps:
     - path: collaborative_filtering.py
       hash: md5
-      md5: 3870e93b1765ba18b46ee4302ad0c414
-      size: 5385
+      md5: 98175d3395dfd4d2ddc69955923583ca
+      size: 5266
     - path: data/User Listening History.csv
       hash: md5
       md5: 3a12e713844195171c7040c051d6d4ae
@@ -64,8 +64,7 @@ stages:
       hash: md5
       md5: 53f8fa1e7cec19856a6b2bc60ce8881f
       size: 32311353
-    - path: data/item_user_data
+    - path: data/track_ids.npy
       hash: md5
-      md5: db29e80d087c8acd4aae2ba4f822b57c.dir
-      size: 753193758
-      nfiles: 9
+      md5: 4a52e4cb6bae6b0126c1344dac7c7686
+      size: 640058

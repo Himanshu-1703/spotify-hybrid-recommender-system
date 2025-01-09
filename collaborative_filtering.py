@@ -6,7 +6,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 # set paths
 # output paths
-history_data_save_path = "data/item_user_data"
+track_ids_save_path = "data/track_ids.npy"
 filtered_data_save_path = "data/collab_filtered_data.csv"
 interaction_matrix_save_path = "data/interaction_matrix.npz"
 # input paths
@@ -35,13 +35,6 @@ def save_pandas_data_to_csv(data: pd.DataFrame, file_path: str) -> None:
     data.to_csv(file_path, index=False)
     
     
-def save_dask_data_to_csv(data: dd.DataFrame, file_path: str) -> None:
-    """
-    Save the data to a csv file
-    """
-    data.to_csv(file_path, index=False)
-    
-    
 def save_sparse_matrix(matrix: csr_matrix, file_path: str) -> None:
     """
     Save the sparse matrix to a npz file
@@ -49,7 +42,7 @@ def save_sparse_matrix(matrix: csr_matrix, file_path: str) -> None:
     save_npz(file_path, matrix)
 
 
-def create_interaction_matrix(history_data:dd.DataFrame, save_df_path, save_matrix_path) -> csr_matrix:
+def create_interaction_matrix(history_data:dd.DataFrame, track_ids_save_path, save_matrix_path) -> csr_matrix:
     # make a copy of data
     df = history_data.copy()
     
@@ -63,14 +56,17 @@ def create_interaction_matrix(history_data:dd.DataFrame, save_df_path, save_matr
     user_mapping = df['user_id'].cat.codes
     track_mapping = df['track_id'].cat.codes
     
+    # get the list of track_ids
+    track_ids = df['track_id'].cat.categories.values
+    
+    # save the categories
+    np.save(track_ids_save_path, track_ids, allow_pickle=True)
+    
     # add the index columns to the dataframe
     df = df.assign(
         user_idx=user_mapping,
         track_idx=track_mapping
     )
-    
-    # save the dataframe
-    save_dask_data_to_csv(df, save_df_path)
     
     # create the interaction matrix
     interaction_matrix = df.groupby(['track_idx', 'user_idx'])['playcount'].sum().reset_index()
@@ -94,7 +90,7 @@ def create_interaction_matrix(history_data:dd.DataFrame, save_df_path, save_matr
     save_sparse_matrix(interaction_matrix, save_matrix_path)
     
     
-def collaborative_recommendation(song_name,artist_name,user_data,songs_data,interaction_matrix,k=5):
+def collaborative_recommendation(song_name,artist_name,track_ids,songs_data,interaction_matrix,k=5):
     # lowercase the song name
     song_name = song_name.lower()
     
@@ -108,7 +104,7 @@ def collaborative_recommendation(song_name,artist_name,user_data,songs_data,inte
     input_track_id = song_row['track_id'].values.item()
   
     # index value of track_id
-    ind = np.where(user_data['track_id'].cat.categories == input_track_id)[0].item()
+    ind = np.where(track_ids == input_track_id)[0].item()
     
     # fetch the input vector
     input_array = interaction_matrix[ind]
@@ -120,7 +116,7 @@ def collaborative_recommendation(song_name,artist_name,user_data,songs_data,inte
     recommendation_indices = np.argsort(similarity_scores.ravel())[-k-1:][::-1]
     
     # get top k recommendations
-    recommendation_track_ids = user_data['track_id'].cat.categories[recommendation_indices]
+    recommendation_track_ids = track_ids[recommendation_indices]
     
     # get top scores
     top_scores = np.sort(similarity_scores.ravel())[-k-1:][::-1]
@@ -154,8 +150,7 @@ def main():
     filter_songs_data(songs_data, unique_track_ids, filtered_data_save_path)
     
     # create the interaction matrix
-    create_interaction_matrix(user_data, history_data_save_path, interaction_matrix_save_path)
-
+    create_interaction_matrix(user_data, track_ids_save_path, interaction_matrix_save_path)
 
 
 if __name__ == "__main__":

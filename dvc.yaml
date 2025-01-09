@@ -24,6 +24,6 @@ stages:
       - collaborative_filtering.py
       - data/cleaned_data.csv
     outs:
-      - data/item_user_data
+      - data/track_ids.npy
       - data/collab_filtered_data.csv
       - data/interaction_matrix.npz
