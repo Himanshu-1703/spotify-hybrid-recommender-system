@@ -58,19 +58,16 @@ def create_interaction_matrix(history_data:dd.DataFrame, save_df_path, save_matr
     
     # convert string column to categorical
     df = df.categorize(columns=['user_id', 'track_id'])
-    print("Categorical columns created")
     
     # Convert user_id and track_id to numeric indices
     user_mapping = df['user_id'].cat.codes
     track_mapping = df['track_id'].cat.codes
-    print("Categories indexes calculated")
-
+    
     # add the index columns to the dataframe
     df = df.assign(
         user_idx=user_mapping,
         track_idx=track_mapping
     )
-    print("Added index columns to df")
     
     # save the dataframe
     save_dask_data_to_csv(df, save_df_path)
@@ -80,7 +77,6 @@ def create_interaction_matrix(history_data:dd.DataFrame, save_df_path, save_matr
     
     # compute the matrix
     interaction_matrix = interaction_matrix.compute()
-    print("Interaction matrix computed")
     
     # get the indices to form sparse matrix
     row_indices = interaction_matrix['track_idx']
@@ -90,25 +86,24 @@ def create_interaction_matrix(history_data:dd.DataFrame, save_df_path, save_matr
     # get the shape of sparse matrix
     n_tracks = row_indices.nunique()
     n_users = col_indices.nunique()
-    print(f"Shape of sparse matrix calculated where tracks are {n_tracks} and users are {n_users}")
     
     # create the sparse matrix
     interaction_matrix = csr_matrix((values, (row_indices, col_indices)), shape=(n_tracks, n_users))
-    print("Sparse matrix created")
     
     # save the sparse matrix
     save_sparse_matrix(interaction_matrix, save_matrix_path)
     
-    return interaction_matrix, df
     
-    
-def collaborative_recommendation(song_name,user_data,songs_data,interaction_matrix,k=5):
+def collaborative_recommendation(song_name,artist_name,user_data,songs_data,interaction_matrix,k=5):
     # lowercase the song name
     song_name = song_name.lower()
     
-    # fetch the row from songs data
-    song_row = songs_data.loc[songs_data["name"] == song_name]
+    # lowercase the artist name
+    artist_name = artist_name.lower()
     
+    # fetch the row from songs data
+    song_row = songs_data.loc[(songs_data["name"] == song_name) & (songs_data["artist"] == artist_name)]
+   
     # track_id of input song
     input_track_id = song_row['track_id'].values.item()
   
@@ -149,17 +144,19 @@ def collaborative_recommendation(song_name,user_data,songs_data,interaction_matr
 def main():
     # load the history data
     user_data = dd.read_csv(user_listening_history_data_path)
+    
     # get the unique track ids
     unique_track_ids = user_data.loc[:,"track_id"].unique().compute()
     unique_track_ids = unique_track_ids.tolist()
+    
     # filter the songs data
     songs_data = pd.read_csv(songs_data_path)
-    filtered_data = filter_songs_data(songs_data, unique_track_ids, filtered_data_save_path)
-    # create the interaction matrix
-    interaction_matrix, user_data = create_interaction_matrix(user_data, history_data_save_path, interaction_matrix_save_path)
+    filter_songs_data(songs_data, unique_track_ids, filtered_data_save_path)
     
-    return interaction_matrix, user_data, filtered_data
+    # create the interaction matrix
+    create_interaction_matrix(user_data, history_data_save_path, interaction_matrix_save_path)
+
 
 
 if __name__ == "__main__":
-    interaction_matrix, user_data, filtered_data = main()
+    main()
