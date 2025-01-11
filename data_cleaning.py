@@ -19,7 +19,7 @@ def clean_data(data):
     """
     return (
         data
-        .drop_duplicates(subset="spotify_id")
+        .drop_duplicates(subset="track_id")
         .drop(columns=["genre","spotify_id"])
         .fillna({"tags":"no_tags"})
         .assign(

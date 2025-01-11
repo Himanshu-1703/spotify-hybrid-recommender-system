@@ -7,3 +7,4 @@
 /interaction_matrix.npz
 /item_user_data.csv
 /track_ids.npy
+/transformed_hybrid_data.npz

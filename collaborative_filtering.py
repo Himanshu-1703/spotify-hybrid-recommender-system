@@ -20,6 +20,8 @@ def filter_songs_data(songs_data: pd.DataFrame, track_ids: list, save_df_path: s
     """
     # filter data based on track_ids
     filtered_data = songs_data[songs_data["track_id"].isin(track_ids)]
+    # sort the data by track id
+    filtered_data.sort_values(by="track_id", inplace=True)
     # rest index
     filtered_data.reset_index(drop=True, inplace=True)
     # save the data
