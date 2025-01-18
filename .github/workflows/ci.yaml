@@ -33,8 +33,9 @@ jobs:
 
       - name: Run Appllication
         run: |
-          nohup streamlit run app.py --server.port 8000 
+          nohup streamlit run app.py --server.port 8000 &
           sleep 30
+          
 
       - name: Test App
         run: |
