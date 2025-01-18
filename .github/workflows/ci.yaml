@@ -41,5 +41,5 @@ jobs:
           pytest test_app.py
       
       - name: Stop Streamlit app
-      run: |
-        pkill -f "streamlit run"
+        run: |
+          pkill -f "streamlit run"
