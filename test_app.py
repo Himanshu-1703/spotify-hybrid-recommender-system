@@ -1,5 +1,4 @@
 import requests
-from pathlib import Path
 import time
 
 app_url = "http://localhost:8000"
@@ -16,3 +15,4 @@ def test_app_loading():
     time.sleep(60)
     status_code = get_app_status(app_url)
     assert status_code == 200, "Unable to load Streamlit App"
+    print("Streamlit App Loaded Successfully")
