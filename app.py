@@ -5,16 +5,6 @@ import pandas as pd
 from collaborative_filtering import collaborative_recommendation
 from numpy import load
 from hybrid_recommendations import HybridRecommenderSystem
-import requests
-from io import BytesIO
-
-
-def fetch_audio_file(url):
-    response = requests.get(url)
-    if response.status_code == 200:
-        return BytesIO(response.content)
-    else:
-        return None
 
 
 # load the data
@@ -100,16 +90,16 @@ if filtering_type == 'Content-Based Filtering':
                 if ind == 0:
                     st.markdown("## Currently Playing")
                     st.markdown(f"#### **{song_name}** by **{artist_name}**")
-                    st.audio(fetch_audio_file(recommendation['spotify_preview_url']))
+                    # st.audio(recommendation['spotify_preview_url'])
                     st.write('---')
                 elif ind == 1:   
                     st.markdown("### Next Up 🎵")
                     st.markdown(f"#### {ind}. **{song_name}** by **{artist_name}**")
-                    st.audio(fetch_audio_file(recommendation['spotify_preview_url']))
+                    # st.audio(recommendation['spotify_preview_url'])
                     st.write('---')
                 else:
                     st.markdown(f"#### {ind}. **{song_name}** by **{artist_name}**")
-                    st.audio(fetch_audio_file(recommendation['spotify_preview_url']))
+                    # st.audio(recommendation['spotify_preview_url'])
                     st.write('---')
         else:
             st.write(f"Sorry, we couldn't find {song_name} in our database. Please try another song.")
@@ -133,16 +123,16 @@ elif filtering_type == 'Collaborative Filtering':
                 if ind == 0:
                     st.markdown("## Currently Playing")
                     st.markdown(f"#### **{song_name}** by **{artist_name}**")
-                    st.audio(fetch_audio_file(recommendation['spotify_preview_url']))
+                    # st.audio(recommendation['spotify_preview_url'])
                     st.write('---')
                 elif ind == 1:   
                     st.markdown("### Next Up 🎵")
                     st.markdown(f"#### {ind}. **{song_name}** by **{artist_name}**")
-                    st.audio(fetch_audio_file(recommendation['spotify_preview_url']))
+                    # st.audio(recommendation['spotify_preview_url'])
                     st.write('---')
                 else:
                     st.markdown(f"#### {ind}. **{song_name}** by **{artist_name}**")
-                    st.audio(fetch_audio_file(recommendation['spotify_preview_url']))
+                    # st.audio(recommendation['spotify_preview_url'])
                     st.write('---')
         else:
             st.write(f"Sorry, we couldn't find {song_name} in our database. Please try another song.")
@@ -171,16 +161,16 @@ elif filtering_type == "Hybrid Recommender System":
                 if ind == 0:
                     st.markdown("## Currently Playing")
                     st.markdown(f"#### **{song_name}** by **{artist_name}**")
-                    st.audio(fetch_audio_file(recommendation['spotify_preview_url']))
+                    # st.audio(recommendation['spotify_preview_url'])
                     st.write('---')
                 elif ind == 1:   
                     st.markdown("### Next Up 🎵")
                     st.markdown(f"#### {ind}. **{song_name}** by **{artist_name}**")
-                    st.audio(fetch_audio_file(recommendation['spotify_preview_url']))
+                    # st.audio(recommendation['spotify_preview_url'])
                     st.write('---')
                 else:
                     st.markdown(f"#### {ind}. **{song_name}** by **{artist_name}**")
-                    st.audio(fetch_audio_file(recommendation['spotify_preview_url']))
+                    # st.audio(recommendation['spotify_preview_url'])
                     st.write('---')
         else:
             st.write(f"Sorry, we couldn't find {song_name} in our database. Please try another song.")
